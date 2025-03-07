@@ -3,7 +3,7 @@
 /* exported handleAuthClick */
 /* exported handleSignoutClick */
 
-import { config } from "./config";
+import { config } from "./config.js";
 
 // TODO(developer): Set to client ID and API key from the Developer Console
 const CLIENT_ID = config.CLIENT_ID;
@@ -23,11 +23,28 @@ let gisInited = false;
 document.getElementById('authorize_button').style.visibility = 'hidden';
 document.getElementById('signout_button').style.visibility = 'hidden';
 
+let authbtn = document.getElementById('authorize_button');
+authbtn.addEventListener('click', handleAuthClick);
+
+let signoutbtn = document.getElementById('signout_button');
+signoutbtn.addEventListener('click', handleSignoutClick);
+
+let gapiScript = document.getElementById('gapi-loaded');
+gapiScript.onload = function () {
+    gapiLoaded();
+}
+
+let gisScript = document.getElementById('gis-loaded');
+gisScript.onload = function () {
+    gisLoaded();
+}
+
 /**
  * Callback after api.js is loaded.
  */
 function gapiLoaded() {
     gapi.load('client', initializeGapiClient);
+    console.log('gapiLoaded');
 }
 
 /**
@@ -124,8 +141,6 @@ async function listMajors() {
         return;
     }
     // Flatten to string to display
-    const output = range.values.reduce(
-        (str, row) => `${str}${row[0]}, ${row[4]}\n`,
-        'Name, Major:\n');
+    const output = range.values.reduce((str, row) => `${str}\n${row[0]}, ${row[1]}`); 
     document.getElementById('content').innerText = output;
 }
