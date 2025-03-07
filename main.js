@@ -44,7 +44,6 @@ gisScript.onload = function () {
  */
 function gapiLoaded() {
     gapi.load('client', initializeGapiClient);
-    console.log('gapiLoaded');
 }
 
 /**
